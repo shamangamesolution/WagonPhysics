@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CaesarMath\CaesarMath\CaesarMath.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -21,7 +21,6 @@ public class WagonPhysicsCore : IWagonPhysicsCore,IDisposable
     public IBodyRepositoryApi BodyRepositoryApi { get; }
     public IBodySnapshotProvider BodySnapshotProvider { get; }  
     public ICollisionEventsProvider CollisionEventsProvider { get; }
-    public IWorldTickEventsProvider TickProvider { get; }
     public IForceApplier ForceApplier { get; }
 
     public void Dispose()

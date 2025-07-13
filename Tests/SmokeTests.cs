@@ -1,11 +1,12 @@
 using System.Diagnostics;
+using CaesarMath;
 using Contracts;
 using Contracts.Models;
 using Contracts.Operations.ApplyForce;
 using Contracts.Operations.Create;
 using Contracts.Operations.CreateWorld;
 using Contracts.Operations.DestroyWorld;
-using Contracts.Operations.StartSimulation;
+using Contracts.Operations.ForwardSimulation;
 using Core;
 using NUnit.Framework;
 
@@ -30,12 +31,6 @@ public class SmokeTests
                 wagon.BodyRepositoryApi.CreateCapsule(new CreateCapsuleContext(worldId));
             Assert.IsTrue(createCapsuleResult1.IsSuccess);
             Assert.IsTrue(createCapsuleResult2.IsSuccess);
-            //start simulation
-            var startSimulationResult = wagon.SimulationController.StartSimulation(new StartSimulationContext(worldId)
-            {
-                TicksPerSecond = 60
-            });
-            Assert.IsTrue(startSimulationResult.IsSuccess);
             //apply force to first capsule
             var appyForceResult = wagon.ForceApplier.ApplyForce(new ApplyForceContext(worldId)
             {
@@ -44,27 +39,12 @@ public class SmokeTests
                 BodyId = createCapsuleResult1.Body.Id
             });
             Assert.IsTrue(appyForceResult.IsSuccess);
-            var tickReached = false;
-            //register post tick handler
-            var handlerId = wagon.TickProvider.AddPostWorldTickHandler(worldId, context =>
+            //forward world to 1/6 sec
+            var forwardResult = wagon.SimulationController.ForwardSimulation(new ForwardSimulationContext()
             {
-                if (context.TickNo == 10)
-                {
-                    tickReached = true;
-                    //check capsules positions
-                }
+                ForwardSec = (Fixed)1 / (Fixed)6
             });
-            //wait for tick to check capsule1 position
-            var sw = new Stopwatch();
-            sw.Start();
-            while (!tickReached)
-            {
-                if (sw.ElapsedMilliseconds > 5000)
-                    break;
-            }
-            Assert.IsTrue(tickReached);
-            //remove handler
-            wagon.TickProvider.RemoveHandler(handlerId);
+            Assert.IsTrue(forwardResult.IsSuccess);
             //destroy world
             await wagon.DestroyWorldAsync(new DestroyWorldContext(worldId));
         }

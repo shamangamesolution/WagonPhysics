@@ -1,11 +1,11 @@
-using Contracts.Operations.StartSimulation;
-using Contracts.Operations.StopSimulation;
+using Contracts.Operations.ForwardSimulation;
+using Contracts.Operations.RewindSimulation;
 
 namespace Contracts.Managers;
 
 public interface ISimulationController
 {
     //simulation control
-    StartSimulationResult StartSimulation(StartSimulationContext startSimulationContext);
-    StopSimulationResult StopSimulation(StopSimulationContext stopSimulationContext);
+    ForwardSimulationResult ForwardSimulation(ForwardSimulationContext startSimulationContext);
+    RewindSimulationResult RewindSimulation(RewindSimulationContext stopSimulationContext);
 }

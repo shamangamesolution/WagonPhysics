@@ -18,8 +18,6 @@ public interface IWagonPhysicsCore
     IBodySnapshotProvider BodySnapshotProvider { get; }
     //get object to register some handlers on collisions
     ICollisionEventsProvider CollisionEventsProvider { get; }
-    //get object to register some handlers for world ticks
-    IWorldTickEventsProvider TickProvider { get; }
     //apply some force
     IForceApplier ForceApplier { get; }
 }
